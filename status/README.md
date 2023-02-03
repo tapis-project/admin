@@ -17,6 +17,9 @@ tenant in the list can include the following attributes:
   - `authn_username`: A valid username for the tenant; used for the Authenticator token generation check.
   - `authn_password`: Corrsponding password for `authn_username`; used for the Authenticator token generation check.
 
+See the `endpoints-minimal-ex.yaml` and the `endpoints-complex-ex.yaml` for some examples. (NOTE:
+the examples are missing the JWTs and passwords...)
+
 2) Use the image `tapis/status-config-builder` to build a Gatus config from the `endpoints.yaml` 
 as follows:
 
@@ -52,3 +55,7 @@ To develop this project, make code changes and then create a new container image
 ```
 docker build -t tapis/status-config-builder .
 ```
+
+All of the actual checks/tests are in the `config.yaml.j2` file. Simply add new tests by 
+writing some Jinja2 template code there and then recompile the image using the Docker build
+command above. 
