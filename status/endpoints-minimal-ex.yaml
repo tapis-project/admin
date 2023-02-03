@@ -1,0 +1,9 @@
+# A minimal example that will generate monitoring for all but the authenticator service using the
+# the default time intervals. 
+#
+# NOTE: the jwt below must be updated with a valid JWT.
+tenants:
+  - dev:
+    base_url: https://dev.develop.tapis.io
+    display: (Dev Tenant)
+    jwt: eyJ0eXAiO....

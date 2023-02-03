@@ -1,0 +1,29 @@
+# A more involved example with multiple tenants and different services and intervals specified.
+#
+# NOTE: the jwt's and password below must be updated with a valid JWT.
+tenants:
+  - dev:
+    base_url: https://dev.develop.tapis.io
+    healthcheck_interval: 1m
+    display: (Dev Tenant)
+    jwt: eyJ0eXAiO....
+    services:
+     - systems
+     - apps
+     - jobs
+     - actors
+
+  - tacc:
+    base_url: https://tacc.develop.tapis.io  
+    display: (TACC Tenant)
+    healthcheck_interval: 30s
+    servicecheck_interval: 120s
+    jwt: eyJ0eX....
+    services:
+     - systems
+     - apps
+     - jobs
+     - actors
+     - authenticator
+    authn_username: cicsvc
+    authn_password: the-password...   
