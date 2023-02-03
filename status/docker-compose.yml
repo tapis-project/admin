@@ -1,0 +1,12 @@
+# Note: This compose file require a config.yaml in the current working directory, generated using the
+#       tapis/status-config-builder image.
+
+version: "3"
+services:
+  gatus:
+    image: twinproduction/gatus:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config.yaml:/config/config.yaml
+      - ./data:/data/
