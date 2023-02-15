@@ -4,9 +4,11 @@
 version: "3"
 services:
   gatus:
-    image: twinproduction/gatus:latest
+    image: twinproduction/gatus:5.3.0
+    container_name: tapis-status
     ports:
       - "8080:8080"
     volumes:
-      - ./config.yaml:/config/config.yaml
+      # - ./config.yaml:/config/config.yaml
+      - ./config2.yaml:/config/config.yaml
       - ./data:/data/
