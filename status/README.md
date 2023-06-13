@@ -10,11 +10,11 @@ include a single `tenants` stanza which is a list of tenants to configure checks
 tenant in the list can include the following attributes:
   - `base_url`: used to make the request
   - `display`: added to the name of each endpoint on the status page.
-  - `jwt`: A valid JWT for the tenant; used for endpoint checks that required auth.
+  - `jwt`: A valid JWT for a user inside the tenant that the tests will exercise; used for endpoint checks that required auth. NOTE: This is not a JWT for a service account.
   - `services`: A list of Tapis v3 services to monitor. If not provided, a default set is included.
   - `healthcheck_interval`: How often to check healthcheck endpoints; default is 15s.
   - `servicecheck_interval`: How often to check service endpoints; default is 1m.
-  - `authn_username`: A valid username for the tenant; used for the Authenticator token generation check.
+  - `authn_username`: A valid username for user in the tenant that the tests will exercise; used for the Authenticator token generation check. NOTE: This is not a service account.
   - `authn_password`: Corrsponding password for `authn_username`; used for the Authenticator token generation check.
 
 See the `endpoints-minimal-ex.yaml` and the `endpoints-complex-ex.yaml` for some examples. (NOTE:
