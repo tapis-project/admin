@@ -2,6 +2,9 @@
 # the default time intervals. 
 #
 # NOTE: the jwt below must be updated with a valid JWT.
+
+port: 8080
+
 tenants:
   - dev:
     base_url: https://dev.develop.tapis.io
