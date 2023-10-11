@@ -1,6 +1,9 @@
 # A more involved example with multiple tenants and different services and intervals specified.
 #
 # NOTE: the jwt's and password below must be updated with a valid JWT.
+
+port: 8080
+
 tenants:
   - dev:
     base_url: https://dev.develop.tapis.io

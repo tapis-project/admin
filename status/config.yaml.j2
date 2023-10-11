@@ -2,6 +2,9 @@ storage:
     type: sqlite
     path: /data/data.db
 
+web:
+    port: {{ port | default("8080") }} 
+
 endpoints:
 {% for tenant in tenants %}
 {% if "systems" in tenant.services %}
