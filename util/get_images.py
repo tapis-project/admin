@@ -48,7 +48,7 @@ def print_all_images(image_set):
         print(i)
 
 def get_tapis_images(image_set):
-    tapis_image_prefixes = ['tapis', 'mrghort', 'abaco', 'scleveland', 'ncareol', ]
+    tapis_image_prefixes = ['tapis', 'abaco', 'scleveland', ]
     tapis_images = []
     for i in image_set:
         for j in tapis_image_prefixes:
@@ -107,8 +107,8 @@ def get_image_data_from_docker_registry(image: str, tag: str):
 
 
 def print_tapis_images(tapis_images):
-    print("Tapis Images (No Tag):")
-    print("**********************")
+    print("Extracted These Tapis Images From images.txt (Tag Removed):")
+    print("***********************************************************")
     for i in tapis_images:
         print(i)
 
@@ -139,10 +139,13 @@ def main():
     parser = argparse.ArgumentParser(description='Check Tapis image versions.')
     parser.add_argument("-d", "--diff", action="store_true", help="Diff images across environments; requires an images.txt file.")
     parser.add_argument("-t", "--tag", help="Image tag to use in the diff comparison; required if passing the --diff flag.")
+    parser.add_argument("-f", "--fulldiff", action="store_true", help="Print the full image diff; Optional when passing the --diff flag. (Default is to only print differences)")
     args = parser.parse_args()
     diff_tapis_images = False
+    print_full_diff = False
     if args.diff:
         diff_tapis_images = True
+        print_full_diff = args.fulldiff 
         if not args.tag:
             print("Error: tag is required when passing the --diff command")
             sys.exit(1)
@@ -172,17 +175,32 @@ def main():
     print_tapis_images(tapis_images_without_tag)
     if diff_tapis_images:
         print("\nDiffing Tapis images...\n")
-        # todo -- make this list programmable
         tags = ["dev", "staging", args.tag]
         for image in tapis_images_without_tag:
-            print(f"image: {image}")
+            # the list of data for this image, one for each tag
+            image_data = []    
             for tag in tags:
                 data = get_image_data_from_docker_registry(image, tag)
                 if not data or not hasattr(data, "get"):
-                    continue
-                digest = data.get('digest')
-                print(f"  {tag}: {digest}")
-            
+                    data = {
+                            "last_updated": "does not exist",
+                            "tag_last_pulled": "does not exist",
+                            "digest": "does not exist",
+                            }
+                image_data.append(data)
+            # decide whether to print the image and all of its tags
+            # first, we always print if there is any difference
+            image_digests = set([d.get('digest') for d in image_data])
+            if len(image_data) < 3 or len(image_digests) > 1:
+                print(f"Found Difference for image: {image}")
+                for idx, d in enumerate(image_data):
+                    print(f"  {tags[idx]}: {d['digest']}")
+
+            # otherwise, we print if doing a full diff
+            elif print_full_diff:
+                print(f"image: {image}")
+                for idx, tag in enumerate(tags):
+                    print(f"  {tag}: {image_data[idx]['digest']}")
 
     if not diff_tapis_images:
         print_tapis_images_with_data(tapis_images_with_data)
